@@ -1,0 +1,174 @@
+basePath: /
+definitions:
+  controllers.Response:
+    properties:
+      data: {}
+      message:
+        example: Success
+        type: string
+      status:
+        example: 200
+        type: integer
+    type: object
+  dto.InputItem:
+    properties:
+      description:
+        type: string
+      itemCode:
+        type: string
+      quantity:
+        type: integer
+    type: object
+  dto.InputOrder:
+    properties:
+      customerName:
+        type: string
+      items:
+        items:
+          $ref: '#/definitions/dto.InputItem'
+        type: array
+    type: object
+  dto.Item:
+    properties:
+      description:
+        type: string
+      itemCode:
+        type: string
+      orderId:
+        type: string
+      quantity:
+        type: integer
+    type: object
+  dto.Order:
+    properties:
+      customerName:
+        type: string
+      id:
+        type: string
+      items:
+        items:
+          $ref: '#/definitions/dto.Item'
+        type: array
+    type: object
+  dto.ResponseOrder-array_dto_Order:
+    properties:
+      data:
+        items:
+          items:
+            $ref: '#/definitions/dto.Order'
+          type: array
+        type: array
+      message:
+        example: Success
+        type: string
+      status:
+        example: 200
+        type: integer
+    type: object
+  dto.ResponseOrder-dto_Order:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/dto.Order'
+        type: array
+      message:
+        example: Success
+        type: string
+      status:
+        example: 200
+        type: integer
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: hilmimuharrom@gmail.com
+    name: M Hilmi Muharromi
+  description: Sample API Spec for Orders
+  termsOfService: /
+  title: Orders API
+  version: v1.0
+paths:
+  /orders:
+    get:
+      consumes:
+      - application/json
+      description: get all orders
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.ResponseOrder-array_dto_Order'
+      summary: list orders
+      tags:
+      - order
+    post:
+      consumes:
+      - application/json
+      description: Create order by product id and user id
+      parameters:
+      - description: Create Order
+        in: body
+        name: order
+        required: true
+        schema:
+          $ref: '#/definitions/dto.InputOrder'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/dto.ResponseOrder-dto_Order'
+      summary: Create order
+      tags:
+      - order
+  /orders/{orderId}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete order by orderId
+      parameters:
+      - description: Id from order
+        in: path
+        name: orderId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.Response'
+      summary: Delete order
+      tags:
+      - order
+    put:
+      consumes:
+      - application/json
+      description: Update order by orderId
+      parameters:
+      - description: Update Order
+        in: body
+        name: order
+        required: true
+        schema:
+          $ref: '#/definitions/dto.InputOrder'
+      - description: Id from order
+        in: path
+        name: orderId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.ResponseOrder-dto_Order'
+      summary: Update order
+      tags:
+      - order
+swagger: "2.0"
